@@ -5,6 +5,12 @@ import { encrypt } from "../helpers/encrypt";
 import { UserService } from "../services/user.services";
 import { UserAddDTO, } from "../dto/user.dto";
 import { plainToClass } from 'class-transformer';
+import { validate, ValidationError } from 'class-validator';
+
+export interface IValidationError {
+    property: string;
+    constraints: { [type: string]: string };
+}
 
 export class UserController {
 
@@ -25,35 +31,34 @@ export class UserController {
         }
  
   } 
+
    static async postInvite(req: Request, res: Response) {
-    
-       
             try {
                 console.log("Body", req.body);
                 const dto = plainToClass(UserAddDTO, req.body);
-                // const validationErrors: ValidationError[] = await validate(dto);
-                // if (validationErrors.length > 0) {
-                //     const errors: IValidationError[] = validationErrors.map((error) => ({
-                //         property: error.property,
-                //         constraints: error.constraints || {},
-                //     }));
-                //     return res.status(400).json({
-                //         success: false,
-                //         status:  400,
-                //         message: 'User Registration failed',
-                //         error: 'Invalid input data',
-                //         validationErrors: errors
-                //     });
-                // }
+                const validationErrors: ValidationError[] = await validate(dto);
+                if (validationErrors.length > 0) {
+                    const errors: IValidationError[] = validationErrors.map((error) => ({
+                        property: error.property,
+                        constraints: error.constraints || {},
+                    }));
+                    return res.status(400).json({
+                        success: false,
+                        status:  400,
+                        message: 'User Registration failed',
+                        error: 'Invalid input data',
+                        validationErrors: errors
+                    });
+                }
     
                 const savedUser = await UserService.invite(dto);
-                // if (!savedUser) {
-                //     return res.status(201).json({
-                //         success: false,
-                //         status:  201,
-                //         message: "USer Already Exist with this email"
-                //     })
-                // }
+                if (!savedUser) {
+                    return res.status(201).json({
+                        success: false,
+                        status:  201,
+                        message: "USer Already Exist with this email"
+                    })
+                }
     
                 return res.status(201).json({
                     success: true,

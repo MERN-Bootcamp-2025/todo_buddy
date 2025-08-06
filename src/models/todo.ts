@@ -10,10 +10,7 @@ import {
 
 import { Expose, Type, Exclude } from "class-transformer";
 
-// status: String ('todo', 'in progress', 'on hold', 'done', 'will not do')
-// priority: String ('low', 'medium', 'high', 'critical')
-
-export enum todoStatus {
+export enum TodoStatus {
   TODO = "todo",
   IN_PROGRESS = "in progress",
   ON_HOLD= "on hold",
@@ -22,7 +19,7 @@ export enum todoStatus {
 
 }
 
-export enum priority {
+export enum Priority {
   LOW = "low",
   MEDIUM = "medium",
   HIGH= "high",
@@ -41,14 +38,14 @@ export class Todo {
   @Column({ type: "varchar", length: 255, nullable: false })
   description!: string;
 
-  @Column({ type: "enum", enum: priority, })
-  priority: priority;
+  @Column({ type: "enum", enum: Priority, })
+  priority: Priority;
 
   @Column({ type: "uuid", default: false })
   invited_by?: string;
 
-  @Column({ type: "enum", enum: todoStatus})
-  status!: todoStatus;
+  @Column({ type: "enum", enum: TodoStatus})
+  status!: TodoStatus;
    
   @Column({type:"date"})
   expected_completion_at: Date;

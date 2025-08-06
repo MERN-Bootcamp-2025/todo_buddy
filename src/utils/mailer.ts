@@ -38,10 +38,10 @@ export async function sendMail({ to, subject, html, text }: MailOptions): Promis
 
 
 
-
 export const sendUserMail = async (from: string, to: string, subject: string, html: string) => {
+
     const transporter = nodemailer.createTransport({
-        service: process.env.MAIL_HOST,
+        host: process.env.MAIL_HOST,
         secure: Number(process.env.SMTP_PORT) === 465, 
         auth: {
             user: process.env.MAIL_USERNAME,
