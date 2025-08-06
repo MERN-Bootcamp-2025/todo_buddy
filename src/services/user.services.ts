@@ -64,6 +64,9 @@ export class UserService {
     const existingUser = await userRepository.findOne({
       where: { email: userDto.email },
     });
+     if (existingUser) {
+      return false;
+    }
     const existingAdmin = await userRepository.findOne({
       where: [
         { email: userDto.from_email },
@@ -77,12 +80,12 @@ export class UserService {
       existingAdmin.role === "admin",
       existingAdmin.id
     );
-    if (existingUser) {
-      return false;
-    }
+   
     if (existingAdmin && existingAdmin.role === "admin") {
       const user = new User();
       const hashedPassword = await encrypt.encryptpass(userDto.password);
+      const currentPassword= userDto.password;
+      console.log("currentPassword",currentPassword);
       user.name = userDto.name;
       user.email = userDto.email;
       user.password_hash = hashedPassword;
@@ -93,7 +96,11 @@ export class UserService {
       const from: string = existingAdmin.email;
       const to: string = user.email;
       const subject: string = `You are invited to TodoBuddy`;
-      const mailTemplate: string = '<html string either defined, or loaded from a html file>'
+      const mailTemplate: string = `<html>
+      <p>name :${ user.name}</p>
+      <p>email :${ user.email}</p>
+      <p>password :${currentPassword}</p>
+      </html>`
 
       sendUserMail( from, to, subject, mailTemplate);
       return savedUser;
@@ -103,7 +110,7 @@ export class UserService {
   }
 
   static async getAllUsers() {
-    console.log("dklfdnf ffhjjf");
+  
     return await userRepository.find();
   }
   static async getUserById(id: string) {

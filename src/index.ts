@@ -3,6 +3,7 @@ import cors from 'cors';
 import { PostgresDataSource } from './config/database';
 import { Request, Response } from "express";
 import { userRouter } from "./routes/user.routes";
+import { sendUserMail } from './utils/mailer';
 // import {inviteRouter} from "./routes/user.routes";
 // import appointmentsRouter from './routes/appointments.routes';
 // import { movieRouter } from "./routes/movie.routes";
@@ -10,6 +11,8 @@ import { userRouter } from "./routes/user.routes";
 // import { request } from 'http';
 // import { errorHandler } from './middleware/error.middleware';
 // import router from './routes/hospital.routes';
+
+
 
 const app = express()
 app.use(express.json());
@@ -26,6 +29,8 @@ app.get("/", (req: Request, res: Response) => {
 app.use((req: Request, res: Response) => {
     res.status(505).json({ message: "Bad Request" });
 })
+
+
 
 PostgresDataSource.initialize().then(() => {
     console.log('Database connected successfully!');
