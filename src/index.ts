@@ -2,7 +2,7 @@ import express, { Router } from 'express';
 import cors from 'cors';
 import { PostgresDataSource } from './config/database';
 import { Request, Response } from "express";
-// import { userRouter } from "./routes/user.routes";
+import { userRouter } from "./routes/user.routes";
 // import appointmentsRouter from './routes/appointments.routes';
 // import { movieRouter } from "./routes/movie.routes";
 // import "reflect-metadata";
@@ -13,7 +13,7 @@ import { Request, Response } from "express";
 const app = express()
 app.use(express.json());
 app.use(cors());
-// app.use("/auth", userRouter);
+app.use("/auth", userRouter);
 // app.use("/hospitals", router)
 // app.use('/appointments', appointmentsRouter);
 
