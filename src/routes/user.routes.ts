@@ -13,7 +13,7 @@ Router.post("/login", AuthController.login);
 // //auth/change-password
 // Router.post("/change-password/:uid", UserController.changePassword);
 
-// Router.get("/users/:id", UserController.getUser);
+Router.post("/invite", UserController.postInvite);
 // Router.get("/users", UserController.getUsers);
 
 

@@ -7,6 +7,7 @@ interface MailOptions {
   text?: string; 
 }
 
+
 export async function sendMail({ to, subject, html, text }: MailOptions): Promise<void> {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -19,7 +20,7 @@ export async function sendMail({ to, subject, html, text }: MailOptions): Promis
   });
 
   const mailOptions = {
-    from: `"CareLink" <${process.env.SMTP_USER}>`,
+    from: `"TODO BUDDY" <${process.env.SMTP_USER}>`,
     to,
     subject,
     html,
@@ -33,4 +34,33 @@ export async function sendMail({ to, subject, html, text }: MailOptions): Promis
     console.error(` Failed to send email to ${to}:`, error);
     throw error;
   }
+}
+
+
+
+
+export const sendUserMail = async (from: string, to: string, subject: string, html: string) => {
+    const transporter = nodemailer.createTransport({
+        service: process.env.MAIL_HOST,
+        secure: Number(process.env.SMTP_PORT) === 465, 
+        auth: {
+            user: process.env.MAIL_USERNAME,
+            pass: process.env.MAIL_PASSWORD
+        }
+    });
+
+    const mailOptions = {
+        from: from,
+        to: to,
+        subject: subject,
+        html: html
+    };
+     try {
+    const responseMail=await transporter.sendMail(mailOptions);
+    console.log(` Email sent to ${to}`,responseMail);
+  } catch (error) {
+    console.error(` Failed to send email to ${to}:`, error);
+    throw error;
+  }
+
 }

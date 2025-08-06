@@ -3,6 +3,7 @@ import cors from 'cors';
 import { PostgresDataSource } from './config/database';
 import { Request, Response } from "express";
 import { userRouter } from "./routes/user.routes";
+// import {inviteRouter} from "./routes/user.routes";
 // import appointmentsRouter from './routes/appointments.routes';
 // import { movieRouter } from "./routes/movie.routes";
 // import "reflect-metadata";
@@ -13,7 +14,8 @@ import { userRouter } from "./routes/user.routes";
 const app = express()
 app.use(express.json());
 app.use(cors());
-app.use("/auth", userRouter);
+app.use("/api", userRouter);
+// app.use("/api/invite", inviteRouter);
 // app.use("/hospitals", router)
 // app.use('/appointments', appointmentsRouter);
 

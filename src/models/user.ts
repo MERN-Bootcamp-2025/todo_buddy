@@ -32,7 +32,7 @@ export class User {
   @Exclude()
   password_hash!: string;
 
-  @Column({ type: "uuid"})
+  @Column({ type: "uuid", nullable: true })
   invited_by?: string;
 
   @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
