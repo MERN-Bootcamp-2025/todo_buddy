@@ -32,6 +32,7 @@ export class UserSignupDTO {
     role: UserRole;
 
     @IsString()
+    @IsOptional()
     invited_by?: string;
 
     // @IsOptional()
