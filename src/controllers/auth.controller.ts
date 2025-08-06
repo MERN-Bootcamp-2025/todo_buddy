@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { UserService } from '../services/user.services';
-import { UserDTO, UserSignupDTO } from '../dto/user.dto';
+import { UserDTO, UserSignupDTO, UserAddDTO } from '../dto/user.dto';
 import { plainToClass } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
 require('dotenv').config();
@@ -22,6 +22,7 @@ export class AuthController {
                 }));
                 return res.status(400).json({
                     success: false,
+                    status:  400,
                     message: 'Validation failed',
                     error: 'Invalid input data',
                     validationErrors: errors
@@ -29,19 +30,33 @@ export class AuthController {
             }
             const { email, password } = req.body;
             if (!email || !password) {
-                return res.status(400).json({ message: "Email and password required" });
+                return res.status(400).json({ 
+                    status:  400,
+                    message: "Email and password required"
+                 });
             }
 
             const { userId, accessToken, user } = await UserService.login(email, password);
-            return res.status(200).json({ message: "Login successful", userId, accessToken,user });
+            return res.status(200).json({ 
+                message: "Login successful",
+                accessToken,
+                user,
+                status: 200,
+             });
 
         } catch (error) {
             console.error(error);
 
             if (error.message === 'User not found' || error.message === 'Invalid credentials') {
-                return res.status(401).json({ message: error.message });
+                return res.status(401).json({ 
+                    status:  401,
+                    message: error.message
+                 });
             }
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ 
+                message: "Internal server error",
+                status:  500, 
+            });
         }
     }
 
@@ -57,6 +72,7 @@ export class AuthController {
                 }));
                 return res.status(400).json({
                     success: false,
+                    status:  400,
                     message: 'User Registration failed',
                     error: 'Invalid input data',
                     validationErrors: errors
@@ -67,12 +83,14 @@ export class AuthController {
             if (!savedUser) {
                 return res.status(201).json({
                     success: false,
+                    status:  201,
                     message: "USer Already Exist with this email"
                 })
             }
 
             return res.status(201).json({
                 success: true,
+                status:  201,
                 message: 'User Registration successful',
                 user: savedUser
             });
@@ -80,6 +98,7 @@ export class AuthController {
         } catch (error) {
             console.log('error', error)
             return res.status(500).json({
+                status:  500,
                 success: false,
                 message: 'Internal server error'
             });
