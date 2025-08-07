@@ -1,7 +1,4 @@
 import { Request, Response } from "express";
-import { PostgresDataSource } from "../config/database";
-import { User } from "../models/user";
-import { encrypt } from "../helpers/encrypt";
 import { UserService } from "../services/user.services";
 import { UserAddDTO, } from "../dto/user.dto";
 import { plainToClass } from 'class-transformer';
@@ -34,7 +31,8 @@ export class UserController {
 
    static async postInvite(req: Request, res: Response) {
             try {
-                console.log("Body", req.body);
+                 const userID= req.user.userId;
+                 
                 const dto = plainToClass(UserAddDTO, req.body);
                 const validationErrors: ValidationError[] = await validate(dto);
                 if (validationErrors.length > 0) {
@@ -51,7 +49,7 @@ export class UserController {
                     });
                 }
     
-                const savedUser = await UserService.invite(dto);
+                const savedUser = await UserService.invite(dto,userID);
                 if (!savedUser) {
                     return res.status(201).json({
                         success: false,

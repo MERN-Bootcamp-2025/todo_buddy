@@ -35,19 +35,6 @@ export class UserSignupDTO {
     @IsOptional()
     invited_by?: string;
 
-
-    // @IsOptional()
-    // @IsString()
-    // phone_no?: string;
-
-    // @IsOptional()
-    // @IsString()
-    // address?: string;
-
-    // @IsOptional()
-    // @IsArray()
-    // @Type(() => Appointments)
-    // patientAppointments?: Appointments[];
 }
 
 
@@ -72,28 +59,15 @@ export class UserAddDTO {
     @IsOptional()
     invited_by?: string;
 
-
-    // from snd email
-
     @IsEmail()
     from_email: string;
 
     @IsString()
     @MinLength(6)
     @MaxLength(15)
+    @IsOptional()
     from_password!: string;
 
-    // @IsOptional()
-    // @IsString()
-    // phone_no?: string;
-
-    // @IsOptional()
-    // @IsString()
-    // address?: string;
-
-    // @IsOptional()
-    // @IsArray()
-    // @Type(() => Appointments)
-    // patientAppointments?: Appointments[];
+ 
 }
 

@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { User } from '../models/user';
+import { Todo } from '../models/todo';
 require('dotenv').config();
 
 export const PostgresDataSource = new DataSource({
@@ -10,7 +11,7 @@ export const PostgresDataSource = new DataSource({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     synchronize: true,
-    entities: [User],
+    entities: [User, Todo],
     subscribers: []
 });
 
