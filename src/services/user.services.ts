@@ -59,41 +59,79 @@ export class UserService {
     return savedUser;
   }
 
-  static async invite(userDto: UserAddDTO) {
-    console.log(userDto, "dsnknksdn");
-    const existingUser = await userRepository.findOne({
+  static async invite(userDto: UserAddDTO, userID:string) {
+    // const existingUser = await userRepository.findOne({
+    //   where: { email: userDto.email },
+    // });
+    //  if (existingUser) {
+    //   return false;
+    // }
+
+    // const existingAdmin = await userRepository.findOne({
+    //   where: [
+    //     { email: userDto.from_email },
+     
+    //   ],
+    // });
+
+    // console.log(
+    //   "existingAdmin",
+    //   existingAdmin,
+    //   existingAdmin.role === "admin",
+    //   existingAdmin.id
+    // );
+   
+    // if (existingAdmin && existingAdmin.role === "admin") {
+    //   const user = new User();
+    //   const hashedPassword = await encrypt.encryptpass(userDto.password);
+    //   const currentPassword= userDto.password;
+    //   console.log("currentPassword",currentPassword);
+    //   user.name = userDto.name;
+    //   user.email = userDto.email;
+    //   user.password_hash = hashedPassword;
+    //   user.role = userDto.role;
+    //   user.invited_by = existingAdmin.id;
+
+    //   const savedUser = await userRepository.save(user);
+    //   const from: string = existingAdmin.email;
+    //   const to: string = user.email;
+    //   const subject: string = `You are invited to TodoBuddy`;
+    //   const mailTemplate: string = `<html>
+    //   <p>name :${ user.name}</p>
+    //   <p>email :${ user.email}</p>
+    //   <p>password :${currentPassword}</p>
+    //   </html>`
+
+    //   sendUserMail( from, to, subject, mailTemplate);
+    //   return savedUser;
+    // }
+
+
+    //------------------or--------------------------
+ const existingUser1 = await userRepository.findOne({
       where: { email: userDto.email },
     });
-     if (existingUser) {
-      return false;
-    }
-    const existingAdmin = await userRepository.findOne({
+   
+
+    const existingAdmin1 = await userRepository.findOne({
       where: [
-        { email: userDto.from_email },
-        { password_hash: userDto.from_password },
+        { id: userID},
+     
       ],
     });
 
-    console.log(
-      "existingAdmin",
-      existingAdmin,
-      existingAdmin.role === "admin",
-      existingAdmin.id
-    );
-   
-    if (existingAdmin && existingAdmin.role === "admin") {
+     if (existingAdmin1 && existingAdmin1.role === "admin") {
       const user = new User();
       const hashedPassword = await encrypt.encryptpass(userDto.password);
       const currentPassword= userDto.password;
-      console.log("currentPassword",currentPassword);
       user.name = userDto.name;
       user.email = userDto.email;
       user.password_hash = hashedPassword;
       user.role = userDto.role;
-      user.invited_by = existingAdmin.id;
+      user.invited_by = existingAdmin1.id;
 
       const savedUser = await userRepository.save(user);
-      const from: string = existingAdmin.email;
+      const from: string = existingAdmin1.email;
       const to: string = user.email;
       const subject: string = `You are invited to TodoBuddy`;
       const mailTemplate: string = `<html>
@@ -105,7 +143,6 @@ export class UserService {
       sendUserMail( from, to, subject, mailTemplate);
       return savedUser;
     }
-
     return false;
   }
 

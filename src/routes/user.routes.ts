@@ -1,19 +1,14 @@
 import * as express from "express";
 import { AuthController } from "../controllers/auth.controller";
 import { UserController } from "../controllers/user.controller";
+import { authentification } from "../middleware/auth.middleware";
 
 const Router = express.Router();
 
-///auth/login
+
 Router.post("/signup", AuthController.signup);
-
-//auth/signup
 Router.post("/login", AuthController.login);
-
-// //auth/change-password
-// Router.post("/change-password/:uid", UserController.changePassword);
-
-Router.post("/invite", UserController.postInvite);
+Router.post("/invite", authentification,UserController.postInvite);
 // Router.get("/users", UserController.getUsers);
 
 

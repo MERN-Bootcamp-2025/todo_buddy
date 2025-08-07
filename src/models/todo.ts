@@ -8,7 +8,6 @@ import {
   OneToOne
 } from "typeorm";
 
-import { Expose, Type, Exclude } from "class-transformer";
 
 export enum TodoStatus {
   TODO = "todo",
@@ -41,9 +40,6 @@ export class Todo {
   @Column({ type: "enum", enum: Priority, })
   priority: Priority;
 
-  @Column({ type: "uuid", default: false })
-  invited_by?: string;
-
   @Column({ type: "enum", enum: TodoStatus})
   status!: TodoStatus;
    
@@ -53,7 +49,7 @@ export class Todo {
   @Column({type:"uuid"})
   user_id: string;
 
-  @Column({type:"boolean"})
+  @Column({type:"boolean", default:false,nullable: true})
   is_deleted: boolean;
   
   @CreateDateColumn()
